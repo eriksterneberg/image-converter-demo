@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  web:
+    container_name: web
+    restart: always
+    build: ./web
+    ports:
+      - "8000:8000"
+    command: gunicorn -w 4 -b :8000 app:application
+
+
+  nginx:
+    container_name: nginx
+    restart: always
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - web
