@@ -53,11 +53,11 @@ def transform(parameters):
     img_format = img.get_format_mimetype().split('/')[1]
     img = ImageService.resize(img, width, height)
 
-    with tempfile.TemporaryFile() as tmp_file:
-        img.save(tmp_file, img_format)
-        tmp_file.seek(0)
+    tmp_file = tempfile.TemporaryFile()
+    img.save(tmp_file, img_format)
+    tmp_file.seek(0)
 
-        return send_file(tmp_file, mimetype=img_format)
+    return send_file(tmp_file, mimetype=img_format)
 
 
 if __name__ == '__main__':
