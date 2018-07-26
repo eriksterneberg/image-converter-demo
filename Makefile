@@ -1,4 +1,4 @@
-.PHONY: staticd testd pycodestyle
+.PHONY: staticd testd pycodestyle test clean-pyc
 
 pycodestyle: 
 	@ echo "Running code style test..."
@@ -7,7 +7,6 @@ pycodestyle:
 test:
 	@ echo "Running tests..."
 	@ docker-compose run web python -m unittest discover tests/ "test_*.py"
-
 
 clean-pyc:
 	@ echo "Cleaning .pyc files"
@@ -19,7 +18,6 @@ staticd:
 	@ make clean-pyc
 	@ make pycodestyle
 	@ docker-compose down --remove-orphans 2>/dev/null 1>&2
-
 
 testd:
 	@ docker-compose down --remove-orphans 2>/dev/null 1>&2
