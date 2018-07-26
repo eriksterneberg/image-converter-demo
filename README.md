@@ -12,13 +12,11 @@ Flask microservice that resizes images
 3. To resize an image, enter the address `localhost/<parameters>?url=<image_url>`, where parameters are the the width and height of the image in the form of `w_<width>` and `h_<height>`, separated by a comma, and where `<image_url>` is the image you want to resize.
 
 Example:
-```
-http://localhost/w_150,h_500?url=https://i.imgflip.com/ujm8r.jpg
-```
+`http://localhost/w_150,h_500?url=https://i.imgflip.com/ujm8r.jpg`
 
 
 ## Tech Stack
-<center>
+
 ```
 +--------------------------------------------+
 | Docker                                     |
@@ -40,7 +38,6 @@ http://localhost/w_150,h_500?url=https://i.imgflip.com/ujm8r.jpg
 |   +----------------------------------+     |
 +--------------------------------------------+
 ```
-</center>
 
 ### Environment: Docker
 I chose Docker for this simple demo as it makes it easy for anyone interested to test the demo locally, or to deploy to production.
