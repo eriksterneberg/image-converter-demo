@@ -9,7 +9,7 @@ Flask microservice that resizes images
 
 2. Go to localhost/health in your local browser to check that it works. You should see the text is "OK".
 
-3. To resize an image, enter the address localhost/\<parameters\>?url=<image_url>, where parameters are the the width and height of the image in the form of w_\<width\> and h_\<height\>, separated by a comma, and where <image_url> is the image you want to resize.
+3. To resize an image, enter the address localhost/\<parameters\>?url=\<image_url\>, where parameters are the the width and height of the image in the form of w_\<width\> and h_\<height\>, separated by a comma, and where \<image_url\> is the image you want to resize.
 
 Example:
 ```
