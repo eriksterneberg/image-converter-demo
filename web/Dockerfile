@@ -1,4 +1,4 @@
-FROM python:3.7.0-alpine3.8
+FROM python:3.7.0
 
 RUN mkdir -p /home/image_converter/
 WORKDIR /home/image_converter/

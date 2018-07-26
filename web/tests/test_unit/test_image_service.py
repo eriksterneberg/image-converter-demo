@@ -1,5 +1,5 @@
 """
-
+Unit tests for functionality in ImageService that have no side effects
 """
 import unittest
 
