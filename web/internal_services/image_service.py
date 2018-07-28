@@ -2,52 +2,37 @@
 Simple service that encapsulates fetching and resizing images
 """
 import requests
-from requests.exceptions import MissingSchema, SSLError
 from io import BytesIO
+
 from PIL import Image
 
 
-class ImageNotFound(Exception):
-    pass
-
-
-class GetImageError(Exception):
+class ImageError(Exception):
     pass
 
 
 class ImageService(object):
 
     @staticmethod
-    def get_image(url: str) -> str:
+    def resize(filepath: str, width: int, height: int):
         """
-        Download image
-
-        TODO: Create a FileService that caches image locally
-        """
-        try:
-            response = requests.get(url, stream=True)
-        except (MissingSchema, SSLError):
-            raise ImageNotFound
-        try:
-            img = Image.open(BytesIO(response.content))
-            return img
-        except Exception as _:
-            raise GetImageError
-
-    @staticmethod
-    def resize(img, width: int, height: int):
-        """
-        Receives a Pillow image object as parameter; resizes and returns.
+        Receives a string object; reads with Pillow, resizes and returns.
 
         If width is None it is calculated using the ratio between the old
         and new height in order to maintain the original height/width ratio.
         Same for height, if it is none. If both width and height are
         specified, we will use the number that has the highest ratio.
         """
+        try:
+            img = Image.open(open(filepath, 'rb'))
+        except Exception as _:
+            raise ImageError
+
         width, height = ImageService.calculate_w_h(
             img.width, img.height, width, height)
         new_img = img.resize((int(width), int(height)))
-        return new_img
+
+        return new_img, img.get_format_mimetype()
 
     @staticmethod
     def calculate_w_h(cur_width, cur_height, width, height):
@@ -69,3 +54,7 @@ class ImageService(object):
             height = cur_height * ratio
 
         return width, height
+
+    @staticmethod
+    def save(filepath: str, img, mime_type: str) -> None:
+        img.save(filepath, mime_type.split('/')[1])

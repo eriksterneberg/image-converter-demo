@@ -164,7 +164,9 @@ Percentage of the requests served within a certain time (ms)
  100%   1617 (longest request)
  ```
 
- 47.39 requests per second is a definite improvement. One problem with this solution is that when I switched from the `sync` worker to the `gevent` worker I was unable to start gunicorn inside the web container. I got an error message like this:
+ 47.39 requests per second is a definite improvement, but the can't be used directly to measure the improvement as the network speed and remote server response time plays a very important role. You can try to benchmark the /health endpoint and just do time.sleep(1) before returning. By doing that I got a 25x qps increase with the above test method.
+ 
+ One problem with the solution is that when I switched from the `sync` worker to the `gevent` worker I was unable to start gunicorn inside the web container. I got an error message like this:
  
  ```
  gunicorn.errors.HaltServer: <HaltServer 'Worker failed to boot.' 3>
