@@ -7,9 +7,9 @@ import shutil
 import unittest
 from unittest.mock import patch, MagicMock
 
-import app
 from requests.exceptions import MissingSchema, SSLError
 
+import app
 from internal_services.file_service import FileService
 
 TEST_DATA_FOLDER = 'tests/data/'

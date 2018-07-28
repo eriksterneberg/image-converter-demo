@@ -73,9 +73,6 @@ def transform(parameters):
         return make_response(
             '{"error": ["The url does not point to a valid image"]}', 400)
 
-    # 4. Cache resized image for future use
-    # ImageService.save(resized_filepath, img, mime_type)
-
     return send_file(resized_filepath, mimetype=mime_type)
 
 
