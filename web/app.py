@@ -48,14 +48,15 @@ def transform(parameters):
         return make_response(
             '{"error": ["Must supply either width or height."]}', 400)
 
-    file_service = FileService(target_url)      
+    file_service = FileService(target_url)
     prefix = '{}-{}-'.format(height, width)
     resized_filepath = file_service.get_cache_key(prefix)
 
     # 1. If resized image exists, return that
     if os.path.exists(resized_filepath):
         img_format = resized_filepath.split('.')[-1]
-        return send_file(resized_filepath, mimetype='image/{}'.format(img_format))
+        return send_file(
+            resized_filepath, mimetype='image/{}'.format(img_format))
 
     # 2. Otherwise download original and cache that
     try:
@@ -66,13 +67,14 @@ def transform(parameters):
 
     # 3. Resize image
     try:
-        img, mime_type = ImageService.resize(filepath, width, height)
+        mime_type = ImageService.resize(
+            filepath, resized_filepath, width, height)
     except ImageError:
         return make_response(
             '{"error": ["The url does not point to a valid image"]}', 400)
 
     # 4. Cache resized image for future use
-    ImageService.save(resized_filepath, img, mime_type)
+    # ImageService.save(resized_filepath, img, mime_type)
 
     return send_file(resized_filepath, mimetype=mime_type)
 

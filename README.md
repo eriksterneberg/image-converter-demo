@@ -63,6 +63,13 @@ First I chose [python:3.7.0-alpine3.8](https://alpinelinux.org/about/) for the P
 
 It is of course possible to create a new Linux image from Alpine where zlib is installed, but that is a bit out of scope of this simple demo.
 
+### Library Bug
+There seems to be a bug in the Pillow library that gives output similar to this:
+```
+../usr/local/Cellar/python/3.6.5_1/Frameworks/Python.framework/Versions/3.6/lib/python3.6/unittest/mock.py:1179: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/eriksterneberg/workspace/interviews/image-converter-demo/web/image_cache/50-50-YmFy\n..jpeg'>
+```
+I haven't had time to investigate properly if this file is actually closed.
+
 ### Performance
 Below is the web server performance with the Gunicorn sync worker class. Please note that I run the tests in a virtualenv instead of using docker-compose to start the docker stack so avoid caching in nginx.
 

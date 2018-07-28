@@ -2,7 +2,6 @@
 Simple service that encapsulates fetching and resizing images
 """
 import requests
-from io import BytesIO
 
 from PIL import Image
 
@@ -14,7 +13,8 @@ class ImageError(Exception):
 class ImageService(object):
 
     @staticmethod
-    def resize(filepath: str, width: int, height: int):
+    def resize(filepath: str, resized_filepath: str,
+               width: int, height: int) -> str:
         """
         Receives a string object; reads with Pillow, resizes and returns.
 
@@ -24,18 +24,22 @@ class ImageService(object):
         specified, we will use the number that has the highest ratio.
         """
         try:
-            img = Image.open(open(filepath, 'rb'))
+            img = Image.open(filepath)
         except Exception as _:
             raise ImageError
 
         width, height = ImageService.calculate_w_h(
             img.width, img.height, width, height)
-        new_img = img.resize((int(width), int(height)))
 
-        return new_img, img.get_format_mimetype()
+        mime_type = img.get_format_mimetype()
+
+        with img.resize((int(width), int(height))) as new_img:
+            ImageService.save(resized_filepath, new_img, mime_type)
+
+        return mime_type
 
     @staticmethod
-    def calculate_w_h(cur_width, cur_height, width, height):
+    def calculate_w_h(cur_width, cur_height, width, height) -> (int, int):
         if width:
             w_ratio = width / cur_width
 

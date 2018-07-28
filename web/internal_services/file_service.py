@@ -2,7 +2,6 @@
 Simple file service that uses local file cache to speed up requests
 """
 import os
-from io import BytesIO
 import base64
 
 import requests
@@ -22,7 +21,8 @@ class FileService(object):
 
     def get_original(self) -> str:
         """
-        
+        Returns relative path to local file if it exists,
+        otherwise downloads, caches and returns new filepath.
         """
         # Get cached copy if it exists
         cache_key = self.get_cache_key()
@@ -40,15 +40,19 @@ class FileService(object):
         return cache_key
 
     def get_cache_key(self, prefix='') -> str:
+        """
+        Calculates a base64 version of the image_url and uses that
+        as filename base.
+        """
         filename = os.path.basename(self.target_url)
 
         base, extension = os.path.splitext(filename)
-        base_encoded = base64.encodestring(base.encode()).decode()
+        base_encoded = base64.encodebytes(base.encode()).decode()
 
         filepath = os.path.join(
             FileService.CACHE_DIR,
             '{}{}.{}'.format(prefix, base_encoded, extension)
-        )        
+        )
         return filepath
 
     @staticmethod
@@ -60,4 +64,5 @@ class FileService(object):
         if not os.path.isdir(FileService.CACHE_DIR):
             os.mkdir(FileService.CACHE_DIR)
 
-        open(filepath, 'wb').write(byte_array)
+        with open(filepath, 'wb') as f:
+            f.write(byte_array)
