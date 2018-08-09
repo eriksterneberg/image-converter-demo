@@ -2,7 +2,7 @@
 Flask microservice that resizes images
 
 
-## Installation and usage
+## Installation and usage - locally
 1. To run the project locally, install Docker for Mac/Windows and run:
 
 ```$ docker-compose up --build -d```
@@ -14,6 +14,26 @@ Flask microservice that resizes images
 Example:
 `http://localhost/w_150,h_500?url=https://i.imgflip.com/ujm8r.jpg`
 
+### Scaling locally
+To increase scale, add more containers for the web task like so:
+`docker-compose   up --scale web=3`
+
+### Routing locally
+Services on the same network can talk to each other, like so:
+```
+$ docker container run --name another-service -d  centos ping 127.0.0.1
+$ docker container exec -it another-service /bin/sh
+sh-4.2# curl web:8000/health
+OK from host 1c6094c954da
+```
+Todo:
+Test how this works when deploying using `docker stack`.
+
+## Deployment
+TBD
+
+### Routing
+TBD
 
 ## Tech Stack
 

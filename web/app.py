@@ -5,6 +5,7 @@ Simple Flask app that downloads and resizes images
 import os
 import re
 import tempfile
+import socket
 
 from flask import Flask, request, make_response, send_file
 
@@ -12,6 +13,7 @@ from internal_services.file_service import FileService, FileNotFound
 from internal_services.image_service import ImageService, ImageError
 
 application = Flask(__name__)
+host = socket.gethostname()
 
 
 # Using two different regex is slower than one, but more readable.
@@ -23,7 +25,7 @@ HEIGHT_REGEX = r'^h_(?P<height>[1-9][0-9]*)$'
 
 @application.route("/health", methods=["GET"])
 def health():
-    return "OK"
+    return f"OK from host {host}"
 
 
 @application.route("/<parameters>", methods=["GET"])

@@ -7,9 +7,14 @@ services:
     build: ./web
     image: sterneberg/image-converter-web
     ports:
-      - 8000
+      - 8000:8000
     networks:
       - front-tier
+    deploy:
+      replicas: 3
+    update_config:
+      parallelism: 2
+      delay: 10s      
     command: 'gunicorn --worker-class gevent --workers 4 --bind :8000 app:application'
 
   nginx:
@@ -25,4 +30,4 @@ services:
 
 networks:
   front-tier:
-    driver: bridge
+    driver: overlay
